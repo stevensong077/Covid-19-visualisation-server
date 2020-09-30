@@ -1,6 +1,9 @@
 var mongoose = require("mongoose");
 
-mongoose.connect("mongodb://localhost:27017/covid", { useNewUrlParser: true });
+const conn = mongoose.connect("mongodb://localhost:27017/covid", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
 db = mongoose.connection;
 db.on("connected", function() {
   console.log("Connected to database successfully.");
@@ -13,3 +16,5 @@ db.on("error", function() {
 db.on("disconnected", function() {
   console.log("MongoDB connected disconnected.");
 });
+
+module.exports = conn;
