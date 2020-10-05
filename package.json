@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start":"nodemon server.js",
+    "start": "nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -18,9 +18,12 @@
   },
   "homepage": "https://github.com/stevensong077/Covid-19-visualisation-server#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "csvtojson": "^2.0.10",
+    "express": "^4.17.1",
+    "request": "^2.88.2"
   },
   "devDependencies": {
+    "mongoose": "^5.10.7",
     "nodemon": "^2.0.4"
   }
 }
