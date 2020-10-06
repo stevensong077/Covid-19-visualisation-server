@@ -1,4 +1,4 @@
-let mongoose = require("mongoose");
+const CovidModel = require("./model/covidModel");
 const csv = require("csvtojson");
 let connection = require("./db_connection");
 let request = require("request");
@@ -70,75 +70,3 @@ async function setDatabase() {
 setInterval(()=>setDatabase(), 1000*3600*12);
 
 
-let CovidSchema = new mongoose.Schema({
-  postcode: { type: Number, required: true },
-  population: Number,
-  active: Number,
-  cases: Number,
-  rate: Number,
-  new: Number,
-  band: Number,
-  data_date: String,
-  file_processed_date: String
-});
-
-let CovidModel = mongoose.model("covid", CovidSchema);
-
-// CovidModel.deleteMany({}, err => {
-//   if (err) {
-//     console.error();
-//     throw err;
-//   }
-// });
-
-// let postcode3004 = new CovidModel({
-//   postcode: 3004,
-//   population: 9311,
-//   active: 1,
-//   cases: 67,
-//   rate: 10.7,
-//   new: 0,
-//   band: 1,
-//   data_date: "27/09/2020",
-//   file_processed_date: "28/09/2020"
-// });
-// postcode3004.save().then(doc => {
-//   console.log(doc);
-// });
-
-// CovidModel.insertMany({
-//   postcode: 3004,
-//   population: 9311,
-//   active: 1,
-//   cases: 67,
-//   rate: 10.7,
-//   new: 0,
-//   band: 1,
-//   data_date: "27/09/2020",
-//   file_processed_date: "28/09/2020"
-// })
-//   .then(data => {
-//     console.log(data);
-//     console.log("insert successfully.");
-//   })
-//   .catch(err => {
-//     console.log("failed");
-//   });
-
-// CovidModel.find()
-//   .then(data => {
-//     console.log(data);
-//     console.log("insert successfully.");
-//   })
-//   .catch(err => {
-//     console.log("failed");
-//   });
-
-// CovidModel.insertMany(json)
-//   .then(data => {
-//     console.log(data);
-//     console.log("insert successfully.");
-//   })
-//   .catch(err => {
-//     console.log("failed");
-//   });

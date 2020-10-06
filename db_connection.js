@@ -18,4 +18,3 @@ db.on("disconnected", function() {
 });
 
 module.exports = conn;
-
