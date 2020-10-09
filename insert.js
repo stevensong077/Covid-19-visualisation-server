@@ -67,6 +67,6 @@ async function setDatabase() {
 }
 
 
-setInterval(()=>setDatabase(), 1000*3600*12);
+setInterval(()=>setDatabase(), 1000*3600);
 
 
