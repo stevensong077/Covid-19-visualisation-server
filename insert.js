@@ -1,76 +1,11 @@
-let mongoose = require("mongoose");
+const mongoose = require("mongoose");
 const csv = require("csvtojson");
-let connection = require("./db_connection");
-let request = require("request");
+// let request = require("request");
 const fs = require("fs");
+const connection = require("./db_connection");
+const axios = require("axios");
 
-function accessData() {
-  return new Promise((resolve, reject) => {
-    request.get(
-      "https://docs.google.com/spreadsheets/d/e/2PACX-1vTwXSqlP56q78lZKxc092o6UuIyi7VqOIQj6RM4QmlVPgtJZfbgzv0a3X7wQQkhNu8MFolhVwMy4VnF/pub?gid=0&single=true&output=csv",
-      (error, response, body) => {
-        if (!error && response.statusCode == 200) {
-          var covidData = body;
-          fs.writeFile("./data.csv", covidData, err => {
-            if (err) {
-              reject(err);
-            } else {
-              resolve("./data.csv");
-            }
-          });
-        }
-      }
-    );
-  });
-}
-
-async function insertData() {
-  csv()
-    .fromFile("./data.csv")
-    .then(json => {
-      CovidModel.insertMany(json)
-        .then(data => {
-          console.log(data);
-          console.log("insert successfully.");
-        })
-        .catch(err => {
-          console.log("failed");
-        });
-    });
-}
-
-async function setDatabase() {
-  fs.exists("./data.csv", async exist => {
-    if (!exist) {
-      await accessData();
-      insertData();
-    }
-    else {
-       fs.unlink("./data.csv", err => {
-        if (err) {
-          console.error();
-          throw err;
-        }
-        console.log("csv file has been deleted.");
-      });
-       CovidModel.deleteMany({}, err => {
-        if (err) {
-          console.error();
-          throw err;
-        }
-         console.log("data in db has been deleted.");
-      });
-      await accessData();
-      insertData();
-    }
-  });
-}
-
-
-setInterval(()=>setDatabase(), 1000*3600*12);
-
-
-let CovidSchema = new mongoose.Schema({
+const CovidSchema = new mongoose.Schema({
   postcode: { type: Number, required: true },
   population: Number,
   active: Number,
@@ -79,10 +14,88 @@ let CovidSchema = new mongoose.Schema({
   new: Number,
   band: Number,
   data_date: String,
-  file_processed_date: String
+  file_processed_date: String,
 });
 
-let CovidModel = mongoose.model("covid", CovidSchema);
+const CovidModel = mongoose.model("covid", CovidSchema);
+
+const accessData = async () => {
+  await axios
+    .get(
+      "https://docs.google.com/spreadsheets/d/e/2PACX-1vTwXSqlP56q78lZKxc092o6UuIyi7VqOIQj6RM4QmlVPgtJZfbgzv0a3X7wQQkhNu8MFolhVwMy4VnF/pub?gid=0&single=true&output=csv"
+    )
+    .then((response) =>
+      // console.log(response.data),
+      fs.writeFile("./data.csv", response.data, (err) => {})
+    )
+    .catch((error) => console.log(error));
+};
+
+const insertData = async () => {
+  await csv()
+    .fromFile("./data.csv")
+    .then((json) => {
+      CovidModel.insertMany(json)
+        .then((json) => {
+          console.log(json);
+        })
+        .catch((err) => {
+          console.log("failed");
+        });
+    });
+};
+
+const setDatabase = async () => {
+  fs.exists("./data.csv", async (exist) => {
+    if (!exist) {
+      await accessData();
+      insertData();
+    } else {
+      fs.unlink("./data.csv", (err) => {
+        if (err) {
+          console.error();
+          throw err;
+        }
+        console.log("csv file has been deleted.");
+      });
+      CovidModel.deleteMany({}, (err) => {
+        if (err) {
+          console.error();
+          throw err;
+        }
+        console.log("data in db has been deleted.");
+      });
+      await accessData();
+      insertData();
+    }
+  });
+};
+setDatabase()
+
+exports.setDatabase = setDatabase;
+
+// setInterval(()=>setDatabase(), 1000*3600*12);
+
+// function accessData() {
+//   return new Promise((resolve, reject) => {
+//     request.get(
+//       "https://docs.google.com/spreadsheets/d/e/2PACX-1vTwXSqlP56q78lZKxc092o6UuIyi7VqOIQj6RM4QmlVPgtJZfbgzv0a3X7wQQkhNu8MFolhVwMy4VnF/pub?gid=0&single=true&output=csv",
+//       (error, response, body) => {
+//         if (!error && response.statusCode == 200) {
+//           var covidData = body;
+//           console.log(covidData)
+//           fs.writeFile("./data.csv", covidData, err => {
+//             if (err) {
+//               reject(err);
+//             } else {
+//               resolve("./data.csv");
+//             }
+//           });
+//         }
+//       }
+//     );
+//   });
+// }
 
 // CovidModel.deleteMany({}, err => {
 //   if (err) {
