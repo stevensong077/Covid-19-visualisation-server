@@ -4,20 +4,7 @@ const csv = require("csvtojson");
 const fs = require("fs");
 const connection = require("./db_connection");
 const axios = require("axios");
-
-const CovidSchema = new mongoose.Schema({
-  postcode: { type: Number, required: true },
-  population: Number,
-  active: Number,
-  cases: Number,
-  rate: Number,
-  new: Number,
-  band: Number,
-  data_date: String,
-  file_processed_date: String,
-});
-
-const CovidModel = mongoose.model("covid", CovidSchema);
+const CovidModel = require('./src/models/covidModel');
 
 const accessData = async () => {
   await axios

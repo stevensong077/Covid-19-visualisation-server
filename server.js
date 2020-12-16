@@ -3,11 +3,17 @@ const hostname = "localhost";
 const port = 3000;
 const app = express();
 require("./insert.js");
+require('./src/apis/covid');
 app.get("/", (req, res) => {
   res.send("home");
 });
 
-app.get("/page1", (req, res) => {
+const CovidModel = require("./src/models/covidModel");
+
+app.get("/all", (req, res) => {
+  CovidModel.find({}).then((doc) => {
+    console.log(doc);
+  });
   res.send("page1");
 });
 
