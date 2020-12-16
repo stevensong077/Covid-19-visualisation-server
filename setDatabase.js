@@ -4,7 +4,7 @@ const csv = require("csvtojson");
 const fs = require("fs");
 const connection = require("./db_connection");
 const axios = require("axios");
-const CovidModel = require('./src/models/covidModel');
+const CovidModel = require("./src/models/covidModel");
 
 const accessData = async () => {
   await axios
@@ -36,16 +36,16 @@ const setDatabase = async () => {
   fs.exists("./data.csv", async (exist) => {
     if (!exist) {
       await accessData();
-      insertData();
+      await insertData();
     } else {
-      fs.unlink("./data.csv", (err) => {
+      await fs.unlink("./data.csv", (err) => {
         if (err) {
           console.error();
           throw err;
         }
         console.log("csv file has been deleted.");
       });
-      CovidModel.deleteMany({}, (err) => {
+      await CovidModel.deleteMany({}, (err) => {
         if (err) {
           console.error();
           throw err;
@@ -57,12 +57,9 @@ const setDatabase = async () => {
     }
   });
 };
-setDatabase()
 
 exports.setDatabase = setDatabase;
-
 // setInterval(()=>setDatabase(), 1000*3600*12);
-
 // function accessData() {
 //   return new Promise((resolve, reject) => {
 //     request.get(
