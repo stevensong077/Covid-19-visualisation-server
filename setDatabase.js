@@ -24,7 +24,8 @@ const insertData = async () => {
     .then((json) => {
       CovidModel.insertMany(json)
         .then((json) => {
-          console.log(json);
+          // console.log(json);
+          console.log("Insert data successfully.");
         })
         .catch((err) => {
           console.log("failed");
