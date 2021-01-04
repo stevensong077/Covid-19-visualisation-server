@@ -6,7 +6,6 @@ const setDB = require("./setDatabase.js");
 const CovidModel = require("./src/models/covidModel");
 require("./src/apis/covid");
 
-require("./src/apis/covid");
 app.get("/", (req, res) => {
   res.send("home");
 });
