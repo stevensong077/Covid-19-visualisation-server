@@ -4,8 +4,9 @@ const port = 3000;
 const app = express();
 const setDB = require("./setDatabase.js");
 const CovidModel = require("./src/models/covidModel");
+// import cors from 'cors';
 require("./src/apis/covid");
-
+// app.use(cors())
 app.get("/", (req, res) => {
   res.send("home");
 });

@@ -19,6 +19,7 @@
   "homepage": "https://github.com/stevensong077/Covid-19-visualisation-server#readme",
   "dependencies": {
     "axios": "^0.21.0",
+    "cors": "^2.8.5",
     "csvtojson": "^2.0.10",
     "express": "^4.17.1",
     "request": "^2.88.2"
