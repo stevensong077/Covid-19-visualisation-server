@@ -1,12 +1,11 @@
 const express = require("express");
 const hostname = "localhost";
-const port = 3000;
+const port = 4000;
 const app = express();
 const setDB = require("./setDatabase.js");
 const CovidModel = require("./src/models/covidModel");
-// import cors from 'cors';
-require("./src/apis/covid");
-// app.use(cors())
+const cors = require("cors");
+app.use(cors());
 app.get("/", (req, res) => {
   res.send("home");
 });
@@ -14,7 +13,7 @@ app.get("/", (req, res) => {
 // const CovidModel = require("./src/models/covidModel");
 app.get("/all", (req, res) => {
   CovidModel.find({}).then((doc) => {
-    console.log(doc);
+    // console.log(doc);
     res.send(doc);
   });
 });
