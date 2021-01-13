@@ -1,20 +1,16 @@
 const connection = require("./db_connection");
-const mongoose = require("mongoose");
-const LocationModel = require("./src/models/covidModel");
+const LocationModel = require("./src/models/locationModel");
 const file = require("./location.json");
-const fs = require("fs");
 
 const setLocation = async () => {
-//   await fsreadFile(file, (err, data) => {
-//     if (err) throw err;
-//     console.log(data);
-//     const json = JSON.parse(data);
-//   });
-
-//   db.Location.insert(json, function (err, doc) {
-//     console.log(data);
-//     if (err) throw err;
-//   });
+  LocationModel.count({}, (error, count) => {
+    if (count === 0) {
+      LocationModel.insertMany(file, (error, doc) => {
+        console.log(doc);
+        if (error) throw err;
+      });
+    }
+  });
 };
 
 exports.setLocation = setLocation;
