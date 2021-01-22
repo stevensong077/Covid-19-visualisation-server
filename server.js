@@ -40,5 +40,5 @@ app.listen(port, () => {
   console.log(`Server running at http://${hostname}:${port}/`);
   setLocation.setLocation();
   setDB.setDatabase();
-  setInterval(() => setDB.setDatabase(), 1000 * 3600 * 12);
+  setInterval(() => setDB.setDatabase(), 1000 * 3600 * 2);
 });
